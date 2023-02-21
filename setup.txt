@@ -1,0 +1,40 @@
+# On the terminal - Create Laravel project
+
+composer create-project laravel/laravel app-name
+
+cd .\realstate
+php artisan serve
+npm install --save-dev vue @vitejs/plugin-vue # vite works like laravel-mix
+
+import vue on vite.config.js
+
+
+npm run dev
+http://localhost:5173/
+
+#install inertia
+on the terminal:
+composer require inertiajs/inertia-laravel
+
+on the app:
+public -> resources -> views -> welcome.blade.php
+change to app.blade.php
+point to file @vite('resources/js/app.js') where frontend will serve and use @inertiaHead and @inertia
+
+on the terminal:
+npm install @inertiajs/inertia @inertiajs/inertia-vue3
+
+and on js->app.js add client-side setup (https://inertiajs.com/client-side-setup)
+
+# Docker
+docker-compose-up
+
+localhost:8080
+username: root
+server: mysql
+password:root
+
+# Connect to DB
+config/database.php
+
+check connection: php artisan db:show

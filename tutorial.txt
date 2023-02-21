@@ -1,0 +1,72 @@
+Controller (app/http) are classes with methods bound to routes (web.php) that handle requests and send responses seen in the browser
+Good to organize the app logic
+
+- Create a Controller on the terminal:
+    php artisan make:controller IndexController
+    php artisan route:list
+
+Model responsible to manage data
+
+- Display Vue Component
+Resources -> JS -> Pages
+
+- Generate a Model (used to interact with database)
+    php artisan make:model Listing -make
+    (-m creates a migration file, found in database/migrations)
+
+(*check App/Models)
+    php artisan migrate
+    (runs the migrate folder and creates the schemas/tables)
+
+to had migrations manually
+    php artisan make:migration add_fields_to_listings_table
+check status
+    php artisan migrate:status
+rollback command
+    php artisan migrate:rollback
+
+- Generate dummy data for the Model
+    terminal: php artisan make:factory ListingFactory
+    check database/factories and configure the ListingFactory.php to define how the model shoould look like
+    use Seeder @database/seeders to use the ModelFactory and generate the fake data
+    terminal: php artisan db:seed
+
+if error -> php artisan migrate:refresh (carefull because it deletes the whole schema)
+to delete -> php artisan migrate:refresh --seed
+
+- Query the database
+    terminal: php artisan tinker
+                *get
+                Listing::all() // to select *
+                Listing::find(15)
+                Listing::where('beds', '>', 4)->get()
+                Listing::where('beds', '>', 4)->where('area', '>', 200)->get()
+                Listing::where('beds', '>=', 4)->orderBy('price', 'asc')->get()
+                Listing::where('beds', '>=', 4)->orderBy('price', 'asc')->first()
+
+                *update
+                Listing::find(15)
+                $listing->city= 'Porto'
+                $listing->save()
+
+                *insert
+                $listing = Listing::create(['city' => 'Porto', ...])
+
+
+- Resource Controller (used to focus a Controller on a specific resource / eloquent Model)
+    
+    terminal:  php artisan make:controller --resource ListingController
+                (creates the file Where we define the controller methods)
+    on the app:
+        web.php (configure controller routes)
+            Route::resource('listing', ListingController::class);
+
+- Middleware (runned before any http request, used to verify the user and its permissions)
+    Middleware class gets two arguments (request and the next method)
+    - with the request we can check if it has a token and its value
+    
+    on the terminal:
+        php artisan inertia:middleware (it will publish inertia middleware class)
+    on the Middleware\Kernel.php
+        add the middleware namespace
+    on the Inertia Middleware config share method
